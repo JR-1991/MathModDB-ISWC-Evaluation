@@ -1,4 +1,4 @@
-# ISWC Artifact README: Schema Scaffold Retrieval Evaluation
+# MathModDB MCP Server: Schema Scaffold Retrieval Evaluation
 
 ## 1. Scope
 
