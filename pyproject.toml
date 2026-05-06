@@ -1,0 +1,12 @@
+[project]
+name = "test-mcp-scaffold-retrieval"
+version = "0.1.0"
+description = "Test the MathModDB MCP server's ability to retrieve relevant schema elements for natural-language researcher questions."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "anthropic>=0.97.0",
+    "dotenv>=0.9.9",
+    "pydantic>=2.13.3",
+    "rich>=15.0.0",
+]

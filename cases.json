@@ -1,0 +1,295 @@
+{
+    "I'm working with a coupled flow problem and I want to query MathModDB for PDE-based models that carry coupling conditions or assumptions on their formulations. Which schema elements should I use?": {
+      "name": "coupling_conditions_pde",
+      "classes": [
+        {"id": "Q6822213", "label": "partial differential equation"},
+        {"id": "Q6481447", "label": "ordinary differential equation"},
+        {"id": "Q6822417", "label": "stochastic differential equation"},
+        {"id": "Q6824240", "label": "integro-differential equation"},
+        {"id": "Q6672091", "label": "continuous-time model"},
+        {"id": "Q6672088", "label": "continuous-space expression"},
+        {"id": "Q68663", "label": "mathematical model"}
+      ],
+      "object_properties": [
+        {"id": "P1736", "label": "has weak formulation"},
+        {"id": "P1656", "label": "discretized by"},
+        {"id": "P1684", "label": "specialized by"},
+        {"id": "P1655", "label": "approximated by"},
+        {"id": "P1692", "label": "solution to"},
+        {"id": "P1691", "label": "similar to"},
+        {"id": "P1658", "label": "nondimensionalized by"},
+        {"id": "P1657", "label": "linearized by"}
+      ],
+      "data_properties": [
+        {"id": "P989", "label": "defining formula"},
+        {"id": "P983", "label": "in defining formula"},
+        {"id": "P1459", "label": "description"}
+      ],
+      "qualifiers": [
+        {"id": "P1674", "label": "assumes"},
+        {"id": "P984", "label": "symbol represents"},
+        {"id": "P251", "label": "criterion used"}
+      ]
+    },
+  
+    "How would I look up which person or thing a mathematical model is named after in MathModDB?": {
+      "name": "creator_attribution",
+      "classes": [
+        {"id": "Q68663", "label": "mathematical model"}
+      ],
+      "object_properties": [
+        {"id": "P558", "label": "named after"},
+        {"id": "P1209", "label": "discoverer or inventor"},
+        {"id": "P624", "label": "significant person"}
+      ],
+      "data_properties": [],
+      "qualifiers": []
+    },
+  
+    "I want to query MathModDB for kinetic constants and rate equations used in enzyme reaction models. What does the relevant schema look like?": {
+      "name": "enzyme_kinetics",
+      "classes": [
+        {"id": "Q6672074", "label": "chemical constant"},
+        {"id": "Q6534290", "label": "physical constant"},
+        {"id": "Q6481447", "label": "ordinary differential equation"},
+        {"id": "Q6672090", "label": "continuous-time expression"},
+        {"id": "Q6672115", "label": "static quantity"},
+        {"id": "Q6672114", "label": "dynamic quantity"},
+        {"id": "Q6534237", "label": "quantity"}
+      ],
+      "object_properties": [
+        {"id": "P1684", "label": "specialized by"},
+        {"id": "P1657", "label": "linearized by"}
+      ],
+      "data_properties": [
+        {"id": "P989", "label": "defining formula"},
+        {"id": "P983", "label": "in defining formula"}
+      ],
+      "qualifiers": [
+        {"id": "P984", "label": "symbol represents"},
+        {"id": "P1674", "label": "assumes"}
+      ]
+    },
+  
+    "How is the discretization of continuous models into discrete formulations (e.g. finite element schemes) represented in MathModDB?": {
+      "name": "finite_element_discretization",
+      "classes": [
+        {"id": "Q6672091", "label": "continuous-time model"},
+        {"id": "Q6672089", "label": "continuous-space model"},
+        {"id": "Q6672088", "label": "continuous-space expression"},
+        {"id": "Q6672093", "label": "discrete-space model"},
+        {"id": "Q6672094", "label": "discrete-time expression"},
+        {"id": "Q6775546", "label": "discrete-space task"}
+      ],
+      "object_properties": [
+        {"id": "P1656", "label": "discretized by"},
+        {"id": "P1736", "label": "has weak formulation"},
+        {"id": "P1655", "label": "approximated by"},
+        {"id": "P1692", "label": "solution to"},
+        {"id": "P1657", "label": "linearized by"}
+      ],
+      "data_properties": [
+        {"id": "P1459", "label": "description"},
+        {"id": "P983", "label": "in defining formula"},
+        {"id": "P989", "label": "defining formula"}
+      ],
+      "qualifiers": [
+        {"id": "P1674", "label": "assumes"},
+        {"id": "P984", "label": "symbol represents"}
+      ]
+    },
+  
+    "I want to know how research problems are linked to the mathematical models that address them, and to the academic disciplines they belong to. Which schema elements connect these?": {
+      "name": "research_field_domain",
+      "classes": [
+        {"id": "Q6534292", "label": "research problem"},
+        {"id": "Q60231", "label": "academic discipline"},
+        {"id": "Q6534245", "label": "kind of quantity"},
+        {"id": "Q6534247", "label": "computational task"},
+        {"id": "Q68663", "label": "mathematical model"}
+      ],
+      "object_properties": [
+        {"id": "P912", "label": "is the study of"},
+        {"id": "P389", "label": "studied in"},
+        {"id": "P1513", "label": "modelled by"},
+        {"id": "P1684", "label": "specialized by"},
+        {"id": "P30", "label": "main subject"}
+      ],
+      "data_properties": [
+        {"id": "P1459", "label": "description"},
+        {"id": "P104", "label": "described at URL"},
+        {"id": "P1690", "label": "related URL"}
+      ],
+      "qualifiers": [
+        {"id": "P251", "label": "criterion used"},
+        {"id": "P31", "label": "instance of"}
+      ]
+    },
+  
+    "I want to find stochastic models in MathModDB — models with stochastic differential equations or probabilistic processes — and understand how their underlying randomness is represented.": {
+      "name": "stochastic_modelling",
+      "classes": [
+        {"id": "Q6822417", "label": "stochastic differential equation"},
+        {"id": "Q6672078", "label": "probabilistic model"},
+        {"id": "Q6672077", "label": "probabilistic expression"},
+        {"id": "Q6672091", "label": "continuous-time model"},
+        {"id": "Q6481447", "label": "ordinary differential equation"}
+      ],
+      "object_properties": [
+        {"id": "P1692", "label": "solution to"},
+        {"id": "P1684", "label": "specialized by"},
+        {"id": "P1656", "label": "discretized by"},
+        {"id": "P1736", "label": "has weak formulation"},
+        {"id": "P1655", "label": "approximated by"}
+      ],
+      "data_properties": [
+        {"id": "P989", "label": "defining formula"},
+        {"id": "P983", "label": "in defining formula"},
+        {"id": "P1459", "label": "description"}
+      ],
+      "qualifiers": [
+        {"id": "P984", "label": "symbol represents"},
+        {"id": "P1674", "label": "assumes"}
+      ]
+    },
+  
+    "How are mathematical models in MathModDB linked to their defining equations, and how are the symbols in those equations annotated with their meaning?": {
+      "name": "defining_formulas",
+      "classes": [
+        {"id": "Q6481152", "label": "mathematical expression"},
+        {"id": "Q6672075", "label": "deterministic expression"},
+        {"id": "Q6672081", "label": "dynamic expression"},
+        {"id": "Q6534237", "label": "quantity"},
+        {"id": "Q6775543", "label": "deterministic quantity"}
+      ],
+      "object_properties": [
+        {"id": "P1656", "label": "discretized by"},
+        {"id": "P1692", "label": "solution to"},
+        {"id": "P1655", "label": "approximated by"},
+        {"id": "P1657", "label": "linearized by"},
+        {"id": "P1560", "label": "contains"}
+      ],
+      "data_properties": [
+        {"id": "P983", "label": "in defining formula"},
+        {"id": "P989", "label": "defining formula"},
+        {"id": "P1566", "label": "numeric value"},
+        {"id": "P1459", "label": "description"}
+      ],
+      "qualifiers": [
+        {"id": "P984", "label": "symbol represents"},
+        {"id": "P251", "label": "criterion used"},
+        {"id": "P1674", "label": "assumes"}
+      ]
+    },
+  
+    "How are linearizations of nonlinear models represented in MathModDB? I want to find nonlinear equations together with their linearized counterparts.": {
+      "name": "linearization",
+      "classes": [
+        {"id": "Q6672086", "label": "nonlinear equation"},
+        {"id": "Q6672087", "label": "nonlinear task"},
+        {"id": "Q6672107", "label": "linear equation"},
+        {"id": "Q6672112", "label": "linear model"},
+        {"id": "Q6672085", "label": "linear task"},
+        {"id": "Q6481447", "label": "ordinary differential equation"}
+      ],
+      "object_properties": [
+        {"id": "P1657", "label": "linearized by"},
+        {"id": "P1692", "label": "solution to"},
+        {"id": "P1656", "label": "discretized by"},
+        {"id": "P1655", "label": "approximated by"},
+        {"id": "P1684", "label": "specialized by"}
+      ],
+      "data_properties": [
+        {"id": "P1459", "label": "description"},
+        {"id": "P983", "label": "in defining formula"},
+        {"id": "P989", "label": "defining formula"}
+      ],
+      "qualifiers": [
+        {"id": "P1674", "label": "assumes"},
+        {"id": "P984", "label": "symbol represents"}
+      ]
+    },
+  
+    "I want to find dimensional and nondimensional quantities in MathModDB and the relationships between them — which models or expressions get nondimensionalised, and into what.": {
+      "name": "dimensional_analysis",
+      "classes": [
+        {"id": "Q6672079", "label": "dimensionless expression"},
+        {"id": "Q6672080", "label": "dimensionless model"},
+        {"id": "Q6534290", "label": "physical constant"},
+        {"id": "Q6775552", "label": "dimensional quantity"},
+        {"id": "Q6482820", "label": "dimensionless quantity"}
+      ],
+      "object_properties": [
+        {"id": "P1658", "label": "nondimensionalized by"},
+        {"id": "P1684", "label": "specialized by"},
+        {"id": "P1657", "label": "linearized by"},
+        {"id": "P1656", "label": "discretized by"},
+        {"id": "P1691", "label": "similar to"}
+      ],
+      "data_properties": [
+        {"id": "P1566", "label": "numeric value"},
+        {"id": "P983", "label": "in defining formula"}
+      ],
+      "qualifiers": [
+        {"id": "P1674", "label": "assumes"},
+        {"id": "P984", "label": "symbol represents"}
+      ]
+    },
+  
+    "What kinds of computational tasks (eigenvalue problems, linear/nonlinear solves, time-stepping) are derived from mathematical models in MathModDB, and how are they linked back to their underlying models?": {
+      "name": "computational_tasks",
+      "classes": [
+        {"id": "Q6534247", "label": "computational task"},
+        {"id": "Q6672085", "label": "linear task"},
+        {"id": "Q6672087", "label": "nonlinear task"},
+        {"id": "Q6775704", "label": "EIG: eigenvalue problem"},
+        {"id": "Q6775539", "label": "continuous-space task"},
+        {"id": "Q6775549", "label": "discrete-time task"},
+        {"id": "Q6775546", "label": "discrete-space task"}
+      ],
+      "object_properties": [
+        {"id": "P147", "label": "used by"},
+        {"id": "P1657", "label": "linearized by"},
+        {"id": "P1684", "label": "specialized by"},
+        {"id": "P1656", "label": "discretized by"},
+        {"id": "P1655", "label": "approximated by"},
+        {"id": "P1560", "label": "contains"}
+      ],
+      "data_properties": [
+        {"id": "P339", "label": "source code repository"},
+        {"id": "P104", "label": "described at URL"},
+        {"id": "P1459", "label": "description"}
+      ],
+      "qualifiers": []
+    },
+  
+    "How are initial value problems and other problem types (boundary value, eigenvalue) represented in MathModDB, and how do they relate to the underlying differential equations?": {
+      "name": "initial_boundary_problems",
+      "classes": [
+        {"id": "Q6775703", "label": "IVP: initial value problem"},
+        {"id": "Q6824240", "label": "integro-differential equation"},
+        {"id": "Q6775704", "label": "EIG: eigenvalue problem"},
+        {"id": "Q6481447", "label": "ordinary differential equation"},
+        {"id": "Q6672086", "label": "nonlinear equation"},
+        {"id": "Q6672084", "label": "static model"}
+      ],
+      "object_properties": [
+        {"id": "P1736", "label": "has weak formulation"},
+        {"id": "P1692", "label": "solution to"},
+        {"id": "P147", "label": "used by"},
+        {"id": "P1684", "label": "specialized by"},
+        {"id": "P1513", "label": "modelled by"},
+        {"id": "P1658", "label": "nondimensionalized by"}
+      ],
+      "data_properties": [
+        {"id": "P1566", "label": "numeric value"},
+        {"id": "P989", "label": "defining formula"},
+        {"id": "P983", "label": "in defining formula"},
+        {"id": "P1459", "label": "description"}
+      ],
+      "qualifiers": [
+        {"id": "P1674", "label": "assumes"},
+        {"id": "P984", "label": "symbol represents"}
+      ]
+    }
+  }
