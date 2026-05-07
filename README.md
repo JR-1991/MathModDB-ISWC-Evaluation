@@ -2,9 +2,9 @@
 
 ## 1. Scope
 
-This artifact evaluates whether an LLM, constrained to the MathModDB MCP tool `Explore_Ontology`, can retrieve relevant **schema elements** (classes and properties) for natural-language research questions.
+This artifact evaluates whether a model, constrained to the MathModDB MCP tool `Explore_Ontology`, can retrieve relevant **schema elements** (classes and properties) for natural-language research questions.
 
-The evaluation script is `main.py`. Expected annotations are provided in `cases.json`.
+The evaluation script is `main.py`. Benchmark cases are provided in `cases.json`.
 
 ## 2. Repository Contents
 
@@ -16,16 +16,16 @@ The evaluation script is `main.py`. Expected annotations are provided in `cases.
 
 For each natural-language query in `cases.json`, the script:
 
-1. Prompts the model to return schema IDs (`Q...` and `P...`)
+1. Requests schema IDs (`Q...` and `P...`)
 2. Restricts tool use to `Explore_Ontology`
 3. Parses the model response into structured predictions
-4. Compares predicted IDs against the expected set
+4. Compares predicted IDs against the reference set
 
 ## 4. Evaluation Metric
 
 The reported primary metric is **recall** over ID sets:
 
-`recall = |predicted ∩ expected| / |expected|`
+`recall = |predicted ∩ reference| / |reference|`
 
 The script reports:
 
@@ -75,7 +75,7 @@ Optional environment variables:
 
 - `MATHMODDB_MCP_URL` (default: endpoint embedded in `main.py`)
 - `CLAUDE_MODEL` (default: `claude-sonnet-4-6`)
-- `GOLD_PATH` (default: `cases.json`)
+- `CASES_PATH` (default: `cases.json`)
 
 ## 8. Reproducing Results
 
@@ -85,13 +85,13 @@ Run:
 python main.py
 ```
 
-The script executes all cases in `GOLD_PATH` and prints:
+The script executes all cases in the configured case file path (`CASES_PATH`, default `cases.json`) and prints:
 
 - A per-case live execution trace
 - An aggregate metric table
 - A per-case coverage table (hit, missed, extra IDs)
 
-## 9. Expected Data Format
+## 9. Case Data Format
 
 `cases.json` is expected to follow:
 

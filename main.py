@@ -1,14 +1,13 @@
 """
-Evaluation: how well does Explore_Ontology surface the relevant
-MathModDB schema scaffold for natural-language researcher questions?
+Evaluate how well Explore_Ontology surfaces relevant MathModDB
+schema elements for natural-language researcher questions.
 
-The agent has ONLY Explore_Ontology available. It cannot issue SPARQL.
-For each test case (loaded from gold_cases.json) we ask the agent to
-identify the relevant classes, object properties, data properties, and
-qualifier properties. The agent returns a structured JSON payload of
-bare Q/P codes, which we score against the gold set.
+Only Explore_Ontology is available for retrieval. For each benchmark
+case in cases.json, the run requests classes, object properties, data
+properties, and qualifier properties. Returned Q/P IDs are scored
+against the reference set.
 
-Gold cases live in gold_cases.json with structure:
+Cases live in cases.json with structure:
 
     {
       "<query string>": {
@@ -21,12 +20,10 @@ Gold cases live in gold_cases.json with structure:
       ...
     }
 
-Metric: recall of the agent's returned ID set against the gold ID set.
-Lead with recall and canonical-top-1 (visible from the diff table) when
-reading the results.
+Metric: recall of the returned ID set against the reference ID set.
 
 Run with:
-    python eval_scaffold_retrieval.py
+    python main.py
 """
 
 import json
@@ -53,23 +50,23 @@ MCP_URL = os.environ.get(
 )
 MODEL = os.environ.get("CLAUDE_MODEL", "claude-sonnet-4-6")
 MAX_TOKENS = 8000
-GOLD_PATH = Path(os.environ.get("GOLD_PATH", "cases.json"))
+CASES_PATH = Path(os.environ.get("CASES_PATH", "cases.json"))
 
 
-# ---------- gold-case schema --------------------------------------------
+# ---------- case schema -------------------------------------------------
 
 
-class GoldEntry(BaseModel):
+class CaseEntry(BaseModel):
     id: str
     label: str
 
 
-class GoldCase(BaseModel):
+class CaseDefinition(BaseModel):
     name: str
-    classes: list[GoldEntry] = Field(default_factory=list)
-    object_properties: list[GoldEntry] = Field(default_factory=list)
-    data_properties: list[GoldEntry] = Field(default_factory=list)
-    qualifiers: list[GoldEntry] = Field(default_factory=list)
+    classes: list[CaseEntry] = Field(default_factory=list)
+    object_properties: list[CaseEntry] = Field(default_factory=list)
+    data_properties: list[CaseEntry] = Field(default_factory=list)
+    qualifiers: list[CaseEntry] = Field(default_factory=list)
 
     def all_ids(self) -> set[str]:
         return (
@@ -92,13 +89,13 @@ class GoldCase(BaseModel):
         return out
 
 
-def load_gold(path: Path) -> dict[str, GoldCase]:
-    """Returns a dict mapping query string -> GoldCase."""
+def load_cases(path: Path) -> dict[str, CaseDefinition]:
+    """Returns a dict mapping query string -> CaseDefinition."""
     raw = json.loads(path.read_text())
-    return {query: GoldCase.model_validate(payload) for query, payload in raw.items()}
+    return {query: CaseDefinition.model_validate(payload) for query, payload in raw.items()}
 
 
-# ---------- agent response schema --------------------------------------
+# ---------- response schema --------------------------------------------
 
 
 class Scaffold(BaseModel):
@@ -158,7 +155,7 @@ JSON_FENCE = re.compile(r"^```(?:json)?\s*|\s*```$", re.MULTILINE)
 class RunResult:
     case: str
     query: str
-    gold: GoldCase
+    reference: CaseDefinition
     predicted: Optional[Scaffold] = None
     parsed: bool = False
     raw_response: str = ""
@@ -169,25 +166,25 @@ class RunResult:
 
     @property
     def recall(self) -> float:
-        gold = self.gold.all_ids()
-        if not gold:
+        reference_ids = self.reference.all_ids()
+        if not reference_ids:
             return 0.0
         pred = self.predicted.all_ids() if self.predicted else set()
-        return len(pred & gold) / len(gold)
+        return len(pred & reference_ids) / len(reference_ids)
 
     @property
     def f1(self) -> float:
-        gold = self.gold.all_ids()
+        reference_ids = self.reference.all_ids()
         pred = self.predicted.all_ids() if self.predicted else set()
-        denom = len(pred) + len(gold)
-        return (2 * len(pred & gold) / denom) if denom else 0.0
+        denom = len(pred) + len(reference_ids)
+        return (2 * len(pred & reference_ids) / denom) if denom else 0.0
 
 
-def run_case(query: str, gold: GoldCase) -> RunResult:
+def run_case(query: str, case_def: CaseDefinition) -> RunResult:
     schema_str = json.dumps(Scaffold.model_json_schema(), indent=2)
     user_message = USER_PROMPT_TEMPLATE.format(topic=query, schema=schema_str)
 
-    result = RunResult(case=gold.name, query=query, gold=gold)
+    result = RunResult(case=case_def.name, query=query, reference=case_def)
     final_text_chunks: list[str] = []
 
     try:
@@ -302,21 +299,21 @@ def render_metric_table(results: list[RunResult]) -> Table:
 
 
 def render_diff_table(results: list[RunResult]) -> Table:
-    """Hit / missed / extra IDs per case, with labels on gold IDs."""
-    t = Table(title="Per-case ID coverage (labels shown for gold IDs)", show_lines=True)
+    """Hit / missed / extra IDs per case, with labels on reference IDs."""
+    t = Table(title="Per-case ID coverage (labels shown for reference IDs)", show_lines=True)
     t.add_column("case", style="cyan")
     t.add_column("hit", style="green")
     t.add_column("missed", style="red")
-    t.add_column("extra (non-gold)", style="yellow")
+    t.add_column("extra (non-reference)", style="yellow")
 
     for r in results:
-        labels = r.gold.label_lookup()
+        labels = r.reference.label_lookup()
         pred_ids = r.predicted.all_ids() if r.predicted else set()
-        gold_ids = r.gold.all_ids()
+        reference_ids = r.reference.all_ids()
 
-        hit = sorted(gold_ids & pred_ids)
-        missed = sorted(gold_ids - pred_ids)
-        extra = sorted(pred_ids - gold_ids)
+        hit = sorted(reference_ids & pred_ids)
+        missed = sorted(reference_ids - pred_ids)
+        extra = sorted(pred_ids - reference_ids)
 
         hit_str = "\n".join(f"{i} ({labels[i]})" for i in hit) or "—"
         missed_str = "\n".join(f"{i} ({labels[i]})" for i in missed) or "—"
@@ -327,17 +324,17 @@ def render_diff_table(results: list[RunResult]) -> Table:
 
 
 def main() -> None:
-    if not GOLD_PATH.exists():
-        console.print(f"[red]gold file not found:[/red] {GOLD_PATH}")
+    if not CASES_PATH.exists():
+        console.print(f"[red]case file not found:[/red] {CASES_PATH}")
         return
 
-    cases = load_gold(GOLD_PATH)
-    console.print(f"[dim]loaded {len(cases)} cases from {GOLD_PATH}[/dim]")
+    cases = load_cases(CASES_PATH)
+    console.print(f"[dim]loaded {len(cases)} cases from {CASES_PATH}[/dim]")
 
     results: list[RunResult] = []
-    for query, gold in cases.items():
-        console.print(Rule(f"[bold]{gold.name}[/bold]"))
-        r = run_case(query, gold)
+    for query, case_def in cases.items():
+        console.print(Rule(f"[bold]{case_def.name}[/bold]"))
+        r = run_case(query, case_def)
         results.append(r)
         if r.error:
             console.print(f"[red]error:[/red] {r.error}")
