@@ -27,10 +27,16 @@ The reported primary metric is **recall** over ID sets:
 
 `recall = |predicted ∩ reference| / |reference|`
 
+The script additionally reports **precision** and **F1** for each case and in the aggregate summary:
+
+- `precision = |predicted ∩ reference| / |predicted|`
+- `recall = |predicted ∩ reference| / |reference|`
+- `F1 = 2 * precision * recall / (precision + recall)`
+
 The script reports:
 
-- Per-case recall
-- Mean recall over all cases
+- Per-case precision, recall, and F1
+- Mean precision, recall, and F1 over all cases
 - Per-case hit/missed/extra ID analysis
 - Parse status, tool-call count, and token usage
 
@@ -88,7 +94,8 @@ python main.py
 The script executes all cases in the configured case file path (`CASES_PATH`, default `cases.json`) and prints:
 
 - A per-case live execution trace
-- An aggregate metric table
+- A summary table with columns `P`, `R`, and `F1` for each case
+- An aggregate row showing mean precision, recall, and F1 across all cases
 - A per-case coverage table (hit, missed, extra IDs)
 
 ## 9. Case Data Format
