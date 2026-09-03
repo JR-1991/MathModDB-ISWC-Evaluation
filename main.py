@@ -261,6 +261,7 @@ def run_case(query: str, case_def: CaseDefinition) -> RunResult:
             ids = set(re.findall(r"\b(Q\d+|P\d+)\b", cleaned))
             if ids:
                 result.predicted = Scaffold(classes=sorted(ids))
+                result.parsed = True
 
     return result
 
