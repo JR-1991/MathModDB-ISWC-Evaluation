@@ -100,6 +100,8 @@ The script executes all cases in the configured case file path (`CASES_PATH`, de
 
 ## 9. Case Data Format
 
+The benchmarks are defined in the `cases.json` and consist of typical queries from mathematics.
+
 `cases.json` is expected to follow:
 
 ```json
@@ -114,6 +116,19 @@ The script executes all cases in the configured case file path (`CASES_PATH`, de
 }
 ```
 
+### Topic-to-Case Mapping
+
+The benchmark cases are grouped into four high-level theme areas to support thematic analysis of retrieval quality.
+
+| Theme | Cases |
+| --- | --- |
+| Formulations & equations | `coupling_conditions_pde`, `defining_formulas`, `stochastic_modelling` |
+| Model transformations | `finite_element_discretization`, `linearization`, `dimensional_analysis` |
+| Tasks & problem types | `computational_tasks`, `initial_boundary_problems` |
+| Domain & provenance | `creator_attribution`, `research_field_domain`, `enzyme_kinetics` |
+
+The theme information is stored as a `theme` field in each case entry in `cases.json`, and the evaluator also prints an aggregate summary table grouped by theme in `main.py`.
+
 ## 10. Reproducibility Notes
 
 - Results may vary across runs due to model nondeterminism and upstream service
@@ -122,3 +137,16 @@ The script executes all cases in the configured case file path (`CASES_PATH`, de
   retrieval pathways.
 - If strict JSON parsing fails, a regex fallback extracts `Q...` and `P...` IDs
   so cases remain scorable.
+
+## 11. Topic-to-Case Mapping
+
+The benchmark cases are grouped into four high-level theme areas to support thematic analysis of retrieval quality.
+
+| Theme | Cases |
+| --- | --- |
+| Formulations & equations | `coupling_conditions_pde`, `defining_formulas`, `stochastic_modelling` |
+| Model transformations | `finite_element_discretization`, `linearization`, `dimensional_analysis` |
+| Tasks & problem types | `computational_tasks`, `initial_boundary_problems` |
+| Domain & provenance | `creator_attribution`, `research_field_domain`, `enzyme_kinetics` |
+
+The theme information is stored as a `theme` field in each case entry in `cases.json`, and the evaluator also prints an aggregate summary table grouped by theme in `main.py`.
