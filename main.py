@@ -63,6 +63,7 @@ class CaseEntry(BaseModel):
 
 class CaseDefinition(BaseModel):
     name: str
+    theme: str = ""
     classes: list[CaseEntry] = Field(default_factory=list)
     object_properties: list[CaseEntry] = Field(default_factory=list)
     data_properties: list[CaseEntry] = Field(default_factory=list)
@@ -338,6 +339,32 @@ def render_diff_table(results: list[RunResult]) -> Table:
     return t
 
 
+def render_theme_table(results: list[RunResult]) -> Table:
+    grouped: dict[str, list[RunResult]] = {}
+    for r in results:
+        theme = r.reference.theme or "Unspecified"
+        grouped.setdefault(theme, []).append(r)
+
+    t = Table(title="Theme summary", show_lines=True)
+    t.add_column("theme", style="cyan")
+    t.add_column("cases", justify="right")
+    t.add_column("P", justify="right")
+    t.add_column("R", justify="right")
+    t.add_column("F1", justify="right")
+
+    for theme in sorted(grouped):
+        items = grouped[theme]
+        n = len(items)
+        t.add_row(
+            theme,
+            str(n),
+            f"{sum(r.precision for r in items) / n:.2f}",
+            f"{sum(r.recall for r in items) / n:.2f}",
+            f"{sum(r.f1 for r in items) / n:.2f}",
+        )
+    return t
+
+
 def main() -> None:
     if not CASES_PATH.exists():
         console.print(f"[red]case file not found:[/red] {CASES_PATH}")
@@ -362,6 +389,8 @@ def main() -> None:
 
     console.print()
     console.print(render_metric_table(results))
+    console.print()
+    console.print(render_theme_table(results))
     console.print()
     console.print(render_diff_table(results))
 
