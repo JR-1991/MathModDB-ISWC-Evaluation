@@ -108,6 +108,7 @@ The benchmarks are defined in the `cases.json` and consist of typical queries fr
 {
   "Natural language query": {
     "name": "short_case_name",
+    "theme": "mapping_query_to_theme",
     "classes": [{ "id": "Q...", "label": "..." }],
     "object_properties": [{ "id": "P...", "label": "..." }],
     "data_properties": [{ "id": "P...", "label": "..." }],
@@ -138,15 +139,4 @@ The theme information is stored as a `theme` field in each case entry in `cases.
 - If strict JSON parsing fails, a regex fallback extracts `Q...` and `P...` IDs
   so cases remain scorable.
 
-## 11. Topic-to-Case Mapping
 
-The benchmark cases are grouped into four high-level theme areas to support thematic analysis of retrieval quality.
-
-| Theme | Cases |
-| --- | --- |
-| Formulations & equations | `coupling_conditions_pde`, `defining_formulas`, `stochastic_modelling` |
-| Model transformations | `finite_element_discretization`, `linearization`, `dimensional_analysis` |
-| Tasks & problem types | `computational_tasks`, `initial_boundary_problems` |
-| Domain & provenance | `creator_attribution`, `research_field_domain`, `enzyme_kinetics` |
-
-The theme information is stored as a `theme` field in each case entry in `cases.json`, and the evaluator also prints an aggregate summary table grouped by theme in `main.py`.
