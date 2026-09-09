@@ -1,6 +1,7 @@
 {
     "I'm working with a coupled flow problem and I want to query MathModDB for PDE-based models that carry coupling conditions or assumptions on their formulations. Which schema elements should I use?": {
       "name": "coupling_conditions_pde",
+      "theme": "Formulations & equations",
       "classes": [
         {"id": "Q6822213", "label": "partial differential equation"},
         {"id": "Q6481447", "label": "ordinary differential equation"},
@@ -34,6 +35,7 @@
   
     "How would I look up which person or thing a mathematical model is named after in MathModDB?": {
       "name": "creator_attribution",
+      "theme": "Domain & provenance",
       "classes": [
         {"id": "Q68663", "label": "mathematical model"}
       ],
@@ -48,6 +50,7 @@
   
     "I want to query MathModDB for kinetic constants and rate equations used in enzyme reaction models. What does the relevant schema look like?": {
       "name": "enzyme_kinetics",
+      "theme": "Domain & provenance",
       "classes": [
         {"id": "Q6672074", "label": "chemical constant"},
         {"id": "Q6534290", "label": "physical constant"},
@@ -73,6 +76,7 @@
   
     "How is the discretization of continuous models into discrete formulations (e.g. finite element schemes) represented in MathModDB?": {
       "name": "finite_element_discretization",
+      "theme": "Model transformations",
       "classes": [
         {"id": "Q6672091", "label": "continuous-time model"},
         {"id": "Q6672089", "label": "continuous-space model"},
@@ -101,6 +105,7 @@
   
     "I want to know how research problems are linked to the mathematical models that address them, and to the academic disciplines they belong to. Which schema elements connect these?": {
       "name": "research_field_domain",
+      "theme": "Domain & provenance",
       "classes": [
         {"id": "Q6534292", "label": "research problem"},
         {"id": "Q60231", "label": "academic discipline"},
@@ -128,6 +133,7 @@
   
     "I want to find stochastic models in MathModDB — models with stochastic differential equations or probabilistic processes — and understand how their underlying randomness is represented.": {
       "name": "stochastic_modelling",
+      "theme": "Formulations & equations",
       "classes": [
         {"id": "Q6822417", "label": "stochastic differential equation"},
         {"id": "Q6672078", "label": "probabilistic model"},
@@ -155,6 +161,7 @@
   
     "How are mathematical models in MathModDB linked to their defining equations, and how are the symbols in those equations annotated with their meaning?": {
       "name": "defining_formulas",
+      "theme": "Formulations & equations",
       "classes": [
         {"id": "Q6481152", "label": "mathematical expression"},
         {"id": "Q6672075", "label": "deterministic expression"},
@@ -184,6 +191,7 @@
   
     "How are linearizations of nonlinear models represented in MathModDB? I want to find nonlinear equations together with their linearized counterparts.": {
       "name": "linearization",
+      "theme": "Model transformations",
       "classes": [
         {"id": "Q6672086", "label": "nonlinear equation"},
         {"id": "Q6672087", "label": "nonlinear task"},
@@ -212,6 +220,7 @@
   
     "I want to find dimensional and nondimensional quantities in MathModDB and the relationships between them — which models or expressions get nondimensionalised, and into what.": {
       "name": "dimensional_analysis",
+      "theme": "Model transformations",
       "classes": [
         {"id": "Q6672079", "label": "dimensionless expression"},
         {"id": "Q6672080", "label": "dimensionless model"},
@@ -238,6 +247,7 @@
   
     "What kinds of computational tasks (eigenvalue problems, linear/nonlinear solves, time-stepping) are derived from mathematical models in MathModDB, and how are they linked back to their underlying models?": {
       "name": "computational_tasks",
+      "theme": "Tasks & problem types",
       "classes": [
         {"id": "Q6534247", "label": "computational task"},
         {"id": "Q6672085", "label": "linear task"},
@@ -265,6 +275,7 @@
   
     "How are initial value problems and other problem types (boundary value, eigenvalue) represented in MathModDB, and how do they relate to the underlying differential equations?": {
       "name": "initial_boundary_problems",
+      "theme": "Tasks & problem types",
       "classes": [
         {"id": "Q6775703", "label": "IVP: initial value problem"},
         {"id": "Q6824240", "label": "integro-differential equation"},

@@ -63,6 +63,7 @@ class CaseEntry(BaseModel):
 
 class CaseDefinition(BaseModel):
     name: str
+    theme: str = ""
     classes: list[CaseEntry] = Field(default_factory=list)
     object_properties: list[CaseEntry] = Field(default_factory=list)
     data_properties: list[CaseEntry] = Field(default_factory=list)
@@ -165,6 +166,14 @@ class RunResult:
     error: Optional[str] = None
 
     @property
+    def precision(self) -> float:
+        pred = self.predicted.all_ids() if self.predicted else set()
+        if not pred:
+            return 0.0
+        reference_ids = self.reference.all_ids()
+        return len(pred & reference_ids) / len(pred)
+
+    @property
     def recall(self) -> float:
         reference_ids = self.reference.all_ids()
         if not reference_ids:
@@ -253,6 +262,7 @@ def run_case(query: str, case_def: CaseDefinition) -> RunResult:
             ids = set(re.findall(r"\b(Q\d+|P\d+)\b", cleaned))
             if ids:
                 result.predicted = Scaffold(classes=sorted(ids))
+                result.parsed = True
 
     return result
 
@@ -263,7 +273,9 @@ def run_case(query: str, case_def: CaseDefinition) -> RunResult:
 def render_metric_table(results: list[RunResult]) -> Table:
     t = Table(title="Explore_Ontology — scaffold retrieval", show_lines=True)
     t.add_column("case", style="cyan", no_wrap=True)
+    t.add_column("P", justify="right")
     t.add_column("R", justify="right")
+    t.add_column("F1", justify="right")
     t.add_column("parsed", justify="center")
     t.add_column("explore", justify="right")
     t.add_column("in tok", justify="right")
@@ -277,7 +289,9 @@ def render_metric_table(results: list[RunResult]) -> Table:
         )
         t.add_row(
             r.case,
+            f"{r.precision:.2f}",
             f"{r.recall:.2f}",
+            f"{r.f1:.2f}",
             parsed,
             str(r.explore_calls),
             str(r.input_tokens),
@@ -289,7 +303,9 @@ def render_metric_table(results: list[RunResult]) -> Table:
     t.add_section()
     t.add_row(
         "[bold]MEAN[/bold]",
+        f"[bold]{sum(r.precision for r in results) / n:.2f}[/bold]",
         f"[bold]{sum(r.recall for r in results) / n:.2f}[/bold]",
+        f"[bold]{sum(r.f1 for r in results) / n:.2f}[/bold]",
         f"{n_parsed}/{n}",
         f"{sum(r.explore_calls for r in results) / n:.1f}",
         f"{sum(r.input_tokens for r in results) // n}",
@@ -323,6 +339,32 @@ def render_diff_table(results: list[RunResult]) -> Table:
     return t
 
 
+def render_theme_table(results: list[RunResult]) -> Table:
+    grouped: dict[str, list[RunResult]] = {}
+    for r in results:
+        theme = r.reference.theme or "Unspecified"
+        grouped.setdefault(theme, []).append(r)
+
+    t = Table(title="Theme summary", show_lines=True)
+    t.add_column("theme", style="cyan")
+    t.add_column("cases", justify="right")
+    t.add_column("P", justify="right")
+    t.add_column("R", justify="right")
+    t.add_column("F1", justify="right")
+
+    for theme in sorted(grouped):
+        items = grouped[theme]
+        n = len(items)
+        t.add_row(
+            theme,
+            str(n),
+            f"{sum(r.precision for r in items) / n:.2f}",
+            f"{sum(r.recall for r in items) / n:.2f}",
+            f"{sum(r.f1 for r in items) / n:.2f}",
+        )
+    return t
+
+
 def main() -> None:
     if not CASES_PATH.exists():
         console.print(f"[red]case file not found:[/red] {CASES_PATH}")
@@ -347,6 +389,8 @@ def main() -> None:
 
     console.print()
     console.print(render_metric_table(results))
+    console.print()
+    console.print(render_theme_table(results))
     console.print()
     console.print(render_diff_table(results))
 
