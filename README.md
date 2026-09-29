@@ -2,7 +2,7 @@
 
 ## 1. Scope
 
-This artifact evaluates whether a model, constrained to the MathModDB MCP tool `Explore_Ontology`, can retrieve relevant **schema elements** (classes and properties) for natural-language research questions.
+This artifact evaluates whether a model, constrained to the [MathModDB MCP](https://github.com/MaRDI4NFDI/MathModDB-MCP) tool `Explore_Ontology`, can retrieve relevant **schema elements** (classes and properties) for natural-language research questions.
 
 The evaluation script is `main.py`. Benchmark cases are provided in `cases.json`.
 
